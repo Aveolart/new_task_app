@@ -12,13 +12,14 @@ class DataController extends GetxController {
     Response response = await service.getData();
 
     if (response.statusCode == 200) {
-      // _myData = response.statusCode as List;
+      // var data = response.body;
+      _myData = response.body;
       print("Data recieved");
       print(response.body);
       print(response.statusCode);
       // print(data.statusCode);
 
-      // update();
+      update();
     } else {
       // throw Exception('Failed to load post');
       print(response);
