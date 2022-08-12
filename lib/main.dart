@@ -13,7 +13,7 @@ class MainApp extends StatelessWidget {
   const MainApp({Key? key}) : super(key: key);
 
   loadData() async {
-    await Get.find<DataController>().getData();
+    Get.find<DataController>().getDatas().toString();
   }
 
   @override
@@ -21,7 +21,7 @@ class MainApp extends StatelessWidget {
     Get.lazyPut(() => DataController());
     loadData();
     return GetMaterialApp(
-      home: Homepage(),
+      home: const Homepage(),
       debugShowCheckedModeBanner: false,
     );
   }

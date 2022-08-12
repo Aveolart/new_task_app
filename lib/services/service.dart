@@ -1,11 +1,13 @@
 import 'package:get/get.dart';
 
-class DataService extends GetConnect implements GetxService {
+class DataService extends GetConnect {
   Future<Response> getData() async {
     Response response = await get(
-      "http://localhost:8001/gettasks",
+      "http://10.0.0.4:8080/gettasks",
+      // "https://jsonplaceholder.typicode.com/photos",
       headers: {
-        "Content-Type": "applications/json; charset=UTF- 8",
+        // "Content-Type": "text/html; charset=UTF-8",
+        "Content-Type": "applications/json; charset=UTF-8",
       },
     );
     return response;

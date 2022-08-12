@@ -37,7 +37,7 @@ class _HomepageState extends State<Homepage> {
                         color: AppColors.mainColor,
                         fontSize: 50,
                         fontWeight: FontWeight.bold),
-                    children: [
+                    children: const [
                       TextSpan(
                         text: "\nInput your task below",
                         style: TextStyle(
