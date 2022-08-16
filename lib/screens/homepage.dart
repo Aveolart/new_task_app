@@ -62,7 +62,7 @@ class _HomepageState extends State<Homepage> {
                         fontWeight: FontWeight.bold),
                     children: const [
                       TextSpan(
-                        text: "\nInput your task below",
+                        text: "\nSwipe rigth to edit and swipe left to delete",
                         style: TextStyle(
                           color: AppColors.smallTextColor,
                           fontSize: 16,
