@@ -1,20 +1,31 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:task_app/colors/app_colors.dart';
-import 'package:task_app/screens/testing.dart';
+import 'package:task_app/screens/add_task.dart';
+import 'package:task_app/sqflite/database.dart';
+
 import 'package:task_app/widgets/buttonwidget.dart';
+
 import 'package:task_app/widgets/taskwidget.dart';
 
-class AllTasks extends StatelessWidget {
+class AllTasks extends StatefulWidget {
   const AllTasks({Key? key}) : super(key: key);
 
   @override
+  State<AllTasks> createState() => _AllTasksState();
+}
+
+@override
+void initState() {}
+
+class _AllTasksState extends State<AllTasks> {
+  @override
   Widget build(BuildContext context) {
-    List mydata = ["Try harder", "Try Smarter"];
+    DatabaseManager _databaseManager = DatabaseManager();
+
+    // List mydata = ["Try harder", "Try Smarter"];
     final leftIcon = Container(
       padding: EdgeInsets.only(right: 10),
       margin: EdgeInsets.only(bottom: 10),
@@ -66,10 +77,7 @@ class AllTasks extends StatelessWidget {
               child: Row(
                 children: [
                   InkWell(
-                    onTap: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => Testing()));
-                    },
+                    onTap: () {},
                     child: Icon(
                       Icons.home_filled,
                       color: AppColors.secondaryColor,
@@ -103,69 +111,112 @@ class AllTasks extends StatelessWidget {
               ),
             ),
             SizedBox(
-              height: 70,
+              height: 25,
             ),
             Flexible(
-              child: ListView.builder(
-                itemCount: mydata.length,
-                itemBuilder: (context, index) {
-                  return Dismissible(
-                    background: leftIcon,
-                    secondaryBackground: rightIcon,
-                    onDismissed: (DismissDirection direction) {},
-                    confirmDismiss: (DismissDirection direction) async {
-                      if (direction == DismissDirection.startToEnd) {
-                        showModalBottomSheet(
-                          context: context,
-                          barrierColor: Colors.transparent,
-                          backgroundColor: Colors.transparent,
-                          builder: (_) {
-                            return Container(
-                              decoration: BoxDecoration(
-                                color: Color(0x7A1C2941),
-                                borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(20),
-                                  topRight: Radius.circular(20),
-                                ),
+              child: FutureBuilder(
+                  initialData: [],
+                  future: _databaseManager.getTasks(),
+                  builder: (BuildContext context, AsyncSnapshot snapshot) {
+                    return ListView.builder(
+                      itemCount: snapshot.data.length,
+                      itemBuilder: (context, index) {
+                        return GestureDetector(
+                          onTap: () {
+                            // Navigator.push(
+                            //   context,
+                            //   MaterialPageRoute(
+                            //     builder: (context) => AddTAsk(
+                            //       task: snapshot.data[index],
+                            //     ),
+                            //   ),
+                            // ).then((value) {setState(() {
+
+                            // });});
+                            Get.to(
+                              () => AddTAsk(
+                                task: snapshot.data[index],
                               ),
-                              padding: EdgeInsets.only(left: 20, right: 20),
-                              height: MediaQuery.of(context).size.height / 1.8,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  ButtonWidget(
-                                      title: "View",
-                                      textColor: Colors.white,
-                                      backgroundColor: AppColors.mainColor),
-                                  ButtonWidget(
-                                      title: "Edit",
-                                      textColor: AppColors.secondaryColor,
-                                      backgroundColor: AppColors.mainColor)
-                                ],
-                              ),
-                            );
+                            )?.then((value) {
+                              setState(() {});
+                            });
                           },
+                          child: Dismissible(
+                            background: leftIcon,
+                            secondaryBackground: rightIcon,
+                            onDismissed: (DismissDirection direction) {
+                              _databaseManager
+                                  .deleteTask(snapshot.data[index].id);
+                            },
+                            confirmDismiss: (DismissDirection direction) async {
+                              if (direction == DismissDirection.startToEnd) {
+                                showModalBottomSheet(
+                                  context: context,
+                                  barrierColor: Colors.transparent,
+                                  backgroundColor: Colors.transparent,
+                                  builder: (_) {
+                                    return Container(
+                                      decoration: BoxDecoration(
+                                        color: Color(0x7A1C2941),
+                                        borderRadius: BorderRadius.only(
+                                          topLeft: Radius.circular(20),
+                                          topRight: Radius.circular(20),
+                                        ),
+                                      ),
+                                      padding:
+                                          EdgeInsets.only(left: 20, right: 20),
+                                      height:
+                                          MediaQuery.of(context).size.height /
+                                              1.8,
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          ButtonWidget(
+                                              title: "View",
+                                              textColor: Colors.white,
+                                              backgroundColor:
+                                                  AppColors.mainColor),
+                                          ButtonWidget(
+                                              title: "Edit",
+                                              textColor:
+                                                  AppColors.secondaryColor,
+                                              backgroundColor:
+                                                  AppColors.mainColor)
+                                        ],
+                                      ),
+                                    );
+                                  },
+                                );
+                                return false;
+                              }
+                              //  else if (snapshot.data[index].id != 0) {
+                              //    _databaseManager
+                              //       .deleteTask(snapshot.data[index].id);
+                              // }
+                              else {
+                                return Future.delayed(
+                                  Duration(milliseconds: 20),
+                                  () =>
+                                      direction == DismissDirection.endToStart,
+                                );
+                              }
+                            },
+                            key: ObjectKey(index),
+                            child: Container(
+                              margin: EdgeInsets.only(left: 20, right: 20),
+                              child: TaskWidget(
+                                text: snapshot.data[index].title,
+                                color: Colors.blueGrey,
+                                description: snapshot.data[index].description,
+                              ),
+                            ),
+                          ),
                         );
-                        return false;
-                      } else {
-                        return Future.delayed(
-                          Duration(seconds: 1),
-                          () => direction == DismissDirection.endToStart,
-                        );
-                      }
-                    },
-                    key: ObjectKey(index),
-                    child: Container(
-                      margin: EdgeInsets.only(left: 20, right: 20),
-                      child: TaskWidget(
-                        text: mydata[index],
-                        color: Colors.blueGrey,
-                      ),
-                    ),
-                  );
-                },
-              ),
-            )
+                      },
+                    );
+                  }),
+            ),
           ],
         ),
       ),

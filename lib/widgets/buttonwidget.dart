@@ -34,4 +34,3 @@ class ButtonWidget extends StatelessWidget {
     );
   }
 }
-

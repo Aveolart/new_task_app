@@ -2,8 +2,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:task_app/colors/app_colors.dart';
+
 import 'package:task_app/screens/add_task.dart';
 import 'package:task_app/screens/all_tasks.dart';
+
 import 'package:task_app/widgets/buttonwidget.dart';
 import "package:get/get.dart";
 
@@ -15,6 +17,27 @@ class Homepage extends StatefulWidget {
 }
 
 class _HomepageState extends State<Homepage> {
+  // List<TaskModel>? task;
+  // var isLoaded = false;
+
+  // late var number = users?.length.toString();
+
+  // @override
+  // void initState() {
+  //   super.initState();
+
+  //   //fecthing the data
+  //   getData();
+  // }
+
+  // getData() async {
+  //   task = await RemoteServices().getPosts();
+  //   if (task != null) {
+  //     setState(() {
+  //       isLoaded = true;
+  //     });
+  //   }
+  // }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,7 +75,7 @@ class _HomepageState extends State<Homepage> {
               ),
               InkWell(
                 onTap: () {
-                  Get.to(() => AddTAsk(),
+                  Get.to(() => AddTAsk(task: null),
                       transition: Transition.zoom,
                       duration: Duration(milliseconds: 500));
                 },
@@ -64,8 +87,11 @@ class _HomepageState extends State<Homepage> {
               InkWell(
                 onTap: () {
                   Get.to(() => AllTasks(),
-                      transition: Transition.cupertinoDialog,
-                      duration: Duration(milliseconds: 500));
+                          transition: Transition.cupertinoDialog,
+                          duration: Duration(milliseconds: 500))
+                      ?.then((value) {
+                    setState(() {});
+                  });
                 },
                 child: ButtonWidget(
                     title: "View All",

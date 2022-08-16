@@ -23,8 +23,13 @@ class TextFieldWidget extends StatelessWidget {
       maxLines: maxline,
       autofocus: false,
       controller: textController,
+      // keyboardType: TextInputType.name,
+      enableSuggestions: true,
+      
       decoration: InputDecoration(
+      
         filled: true,
+        
         border: InputBorder.none,
         fillColor: AppColors.textHolder,
         hintText: hintText,
