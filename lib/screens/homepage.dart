@@ -17,27 +17,6 @@ class Homepage extends StatefulWidget {
 }
 
 class _HomepageState extends State<Homepage> {
-  // List<TaskModel>? task;
-  // var isLoaded = false;
-
-  // late var number = users?.length.toString();
-
-  // @override
-  // void initState() {
-  //   super.initState();
-
-  //   //fecthing the data
-  //   getData();
-  // }
-
-  // getData() async {
-  //   task = await RemoteServices().getPosts();
-  //   if (task != null) {
-  //     setState(() {
-  //       isLoaded = true;
-  //     });
-  //   }
-  // }
   @override
   Widget build(BuildContext context) {
     return Scaffold(

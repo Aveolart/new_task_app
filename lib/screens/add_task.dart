@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:task_app/colors/app_colors.dart';
+import 'package:task_app/screens/all_tasks.dart';
 import 'package:task_app/sqflite/database.dart';
 import 'package:task_app/sqflite/database_model.dart';
 import 'package:task_app/widgets/buttonwidget.dart';
@@ -13,7 +14,7 @@ class AddTAsk extends StatefulWidget {
   // final String text;
   final TaskApp? task;
   const AddTAsk({Key? key, this.task}) : super(key: key);
-  
+
   @override
   State<AddTAsk> createState() => _AddTAskState();
 }
@@ -115,18 +116,29 @@ class _AddTAskState extends State<AddTAsk> {
                             title: titleController.text.toString(),
                             description: detailsController.text.toString(),
                           );
-                          await databaseManager.insertTask(newtask);
-                          print("task added");
-                          print(titleController.text.toString());
+                          await databaseManager
+                              .insertTask(newtask)
+                              .then((value) {
+                            Get.off(() => AllTasks());
+                            Get.snackbar("Successful", "Task has been added");
+                          });
                         }
                       } else {
                         var id = widget.task!.id;
-                        databaseManager.updateTask(
+                        databaseManager
+                            .updateTask(
                           id!,
                           titleController.text.toString(),
                           detailsController.text.toString(),
-                        );
-                        print("We updated the task");
+                        )
+                            .then((value) {
+                          Get.off(() => AllTasks());
+                          Get.snackbar(
+                            "Successful",
+                            "Task has been updated",
+                            animationDuration: Duration(milliseconds: 600),
+                          );
+                        });
                       }
                     },
                     child: ButtonWidget(

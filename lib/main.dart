@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:task_app/screens/all_tasks.dart';
 
 import 'package:task_app/screens/homepage.dart';
 import 'package:get/get.dart';
@@ -21,7 +22,7 @@ class MainApp extends StatelessWidget {
     // Get.lazyPut(() => DataController());
     // loadData();
     return GetMaterialApp(
-      home: Homepage(),
+      home: AllTasks(),
       debugShowCheckedModeBanner: false,
     );
   }

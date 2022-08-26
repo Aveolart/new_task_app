@@ -62,56 +62,49 @@ class _AllTasksState extends State<AllTasks> {
                   fit: BoxFit.cover,
                 ),
               ),
-              child: IconButton(
-                padding: EdgeInsets.all(20),
-                onPressed: () {
-                  Get.back();
-                },
-                icon: Icon(
-                  Icons.arrow_back,
-                ),
-              ),
-            ),
-            Container(
-              padding: const EdgeInsets.only(left: 20, right: 20, top: 5),
-              child: Row(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  InkWell(
-                    onTap: () {},
-                    child: Icon(
-                      Icons.home_filled,
-                      color: AppColors.secondaryColor,
+                  // IconButton(
+                  //   padding: EdgeInsets.all(20),
+                  //   onPressed: () {
+                  //     Get.back();
+                  //   },
+                  //   icon: Icon(
+                  //     Icons.arrow_back,
+                  //   ),
+                  // ),
+                  Padding(
+                    padding:
+                        const EdgeInsets.only(left: 20.0, right: 20, top: 40),
+                    child: Text(
+                      "Swipe left to delete and Swipe right or tap to Edit",
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.mainColor,
+                          fontSize: 15),
                     ),
                   ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  CircleAvatar(
-                    backgroundColor: Colors.black,
-                    maxRadius: 11,
-                    child: Icon(
-                      Icons.add,
-                      size: 20,
-                      color: Colors.white,
+                  Container(
+                    margin: EdgeInsets.only(top: 30, left: 20),
+                    width: MediaQuery.of(context).size.width / 2,
+                    child: InkWell(
+                      onTap: () {
+                        Get.to(() => AddTAsk(),
+                                transition: Transition.cupertinoDialog,
+                                duration: Duration(milliseconds: 500))
+                            ?.then((value) {
+                          setState(() {});
+                        });
+                      },
+                      child: ButtonWidget(
+                          title: "Add Task",
+                          textColor: Colors.white,
+                          backgroundColor: AppColors.mainColor),
                     ),
-                  ),
-                  Expanded(child: Container()),
-                  Icon(
-                    Icons.calendar_month_sharp,
-                    color: AppColors.secondaryColor,
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Text(
-                    "2",
-                    style: TextStyle(fontSize: 20),
-                  ),
+                  )
                 ],
               ),
-            ),
-            SizedBox(
-              height: 25,
             ),
             Flexible(
               child: FutureBuilder(
@@ -123,16 +116,6 @@ class _AllTasksState extends State<AllTasks> {
                       itemBuilder: (context, index) {
                         return GestureDetector(
                           onTap: () {
-                            // Navigator.push(
-                            //   context,
-                            //   MaterialPageRoute(
-                            //     builder: (context) => AddTAsk(
-                            //       task: snapshot.data[index],
-                            //     ),
-                            //   ),
-                            // ).then((value) {setState(() {
-
-                            // });});
                             Get.to(
                               () => AddTAsk(
                                 task: snapshot.data[index],
@@ -150,51 +133,58 @@ class _AllTasksState extends State<AllTasks> {
                             },
                             confirmDismiss: (DismissDirection direction) async {
                               if (direction == DismissDirection.startToEnd) {
-                                showModalBottomSheet(
-                                  context: context,
-                                  barrierColor: Colors.transparent,
-                                  backgroundColor: Colors.transparent,
-                                  builder: (_) {
-                                    return Container(
-                                      decoration: BoxDecoration(
-                                        color: Color(0x7A1C2941),
-                                        borderRadius: BorderRadius.only(
-                                          topLeft: Radius.circular(20),
-                                          topRight: Radius.circular(20),
+                                // Made a bottomsheet for testing
+                                // showModalBottomSheet(
+                                //   context: context,
+                                //   barrierColor: Colors.transparent,
+                                //   backgroundColor: Colors.transparent,
+                                //   builder: (_) {
+                                //     return Container(
+                                //       decoration: BoxDecoration(
+                                //         color: Color(0x7A1C2941),
+                                //         borderRadius: BorderRadius.only(
+                                //           topLeft: Radius.circular(20),
+                                //           topRight: Radius.circular(20),
+                                //         ),
+                                //       ),
+                                //       padding:
+                                //           EdgeInsets.only(left: 20, right: 20),
+                                //       height:
+                                //           MediaQuery.of(context).size.height /
+                                //               1.8,
+                                //       child: Column(
+                                //         mainAxisAlignment:
+                                //             MainAxisAlignment.center,
+                                //         children: [
+                                //           ButtonWidget(
+                                //               title: "View",
+                                //               textColor: Colors.white,
+                                //               backgroundColor:
+                                //                   AppColors.mainColor),
+                                //           ButtonWidget(
+                                //               title: "Edit",
+                                //               textColor:
+                                //                   AppColors.secondaryColor,
+                                //               backgroundColor:
+                                //                   AppColors.mainColor)
+                                //         ],
+                                //       ),
+                                //     );
+                                //   },
+                                // );
+                                // return false;
+
+                                Get.to(
+                                        AddTAsk(
+                                          task: snapshot.data[index],
                                         ),
-                                      ),
-                                      padding:
-                                          EdgeInsets.only(left: 20, right: 20),
-                                      height:
-                                          MediaQuery.of(context).size.height /
-                                              1.8,
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          ButtonWidget(
-                                              title: "View",
-                                              textColor: Colors.white,
-                                              backgroundColor:
-                                                  AppColors.mainColor),
-                                          ButtonWidget(
-                                              title: "Edit",
-                                              textColor:
-                                                  AppColors.secondaryColor,
-                                              backgroundColor:
-                                                  AppColors.mainColor)
-                                        ],
-                                      ),
-                                    );
-                                  },
-                                );
-                                return false;
-                              }
-                              //  else if (snapshot.data[index].id != 0) {
-                              //    _databaseManager
-                              //       .deleteTask(snapshot.data[index].id);
-                              // }
-                              else {
+                                        transition:
+                                            Transition.leftToRightWithFade,
+                                        duration: Duration(milliseconds: 500))
+                                    ?.then((value) {
+                                  setState(() {});
+                                });
+                              } else {
                                 return Future.delayed(
                                   Duration(milliseconds: 20),
                                   () =>
