@@ -47,6 +47,24 @@ class _AllTasksState extends State<AllTasks> {
       alignment: Alignment.centerRight,
     );
     return Scaffold(
+      floatingActionButton: Container(
+        margin: EdgeInsets.only(top: 30, left: 20),
+        width: MediaQuery.of(context).size.width / 2.5,
+        child: InkWell(
+          onTap: () {
+            Get.to(() => AddTAsk(),
+                    transition: Transition.cupertinoDialog,
+                    duration: Duration(milliseconds: 500))
+                ?.then((value) {
+              setState(() {});
+            });
+          },
+          child: ButtonWidget(
+              title: "Add Task",
+              textColor: Colors.white,
+              backgroundColor: AppColors.mainColor),
+        ),
+      ),
       body: SafeArea(
         child: Column(
           // mainAxisAlignment: MainAxisAlignment.start,
@@ -76,7 +94,19 @@ class _AllTasksState extends State<AllTasks> {
                   // ),
                   Padding(
                     padding:
-                        const EdgeInsets.only(left: 20.0, right: 20, top: 40),
+                        const EdgeInsets.only(left: 20.0, right: 20, top: 20),
+                    child: Text(
+                      "My Todo App ",
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.mainColor,
+                          fontSize: 25),
+                    ),
+                  ),
+
+                  Padding(
+                    padding:
+                        const EdgeInsets.only(left: 20.0, right: 20, top: 10),
                     child: Text(
                       "Swipe left to delete and Swipe right or tap to Edit",
                       style: TextStyle(
@@ -85,24 +115,6 @@ class _AllTasksState extends State<AllTasks> {
                           fontSize: 15),
                     ),
                   ),
-                  Container(
-                    margin: EdgeInsets.only(top: 30, left: 20),
-                    width: MediaQuery.of(context).size.width / 2,
-                    child: InkWell(
-                      onTap: () {
-                        Get.to(() => AddTAsk(),
-                                transition: Transition.cupertinoDialog,
-                                duration: Duration(milliseconds: 500))
-                            ?.then((value) {
-                          setState(() {});
-                        });
-                      },
-                      child: ButtonWidget(
-                          title: "Add Task",
-                          textColor: Colors.white,
-                          backgroundColor: AppColors.mainColor),
-                    ),
-                  )
                 ],
               ),
             ),
