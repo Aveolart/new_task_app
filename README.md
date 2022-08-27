@@ -8,7 +8,6 @@ He used golang for his backend but for some unknown reason it didnt work for me 
 
 Well here we are
 
-
 A new Flutter project.
 
 ## Getting Started
