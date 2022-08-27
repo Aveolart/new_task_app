@@ -1,4 +1,4 @@
-# task_app
+# taskapp or todo app
 
 This project uses local database (sqflite) to save a task name and a task description
 
